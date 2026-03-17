@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motor Minder Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="navbar">
+            <div class="logo">
+                <span class="logo-icon">🌀</span> Motor Minder
+            </div>
+            <div class="nav-links">
+                <a href="#" id="navDashboard" class="active">Dashboard</a>
+                <a href="#" id="navEnergy">Smart Energy</a>
+                <a href="#" id="navModels">3D Models</a>
+                <a href="#" id="navAlerts">Alerts & Logs</a>
+                <a href="#">Settings</a>
+            </div>
+            <div class="user-profile">
+                <div class="avatar"></div> User ⚙️
+            </div>
+        </nav>
+
+        <main class="dashboard-grid" id="dashboardView">
+            <div class="left-panel">
+                <div class="header-text">
+                    <h4 class="subtitle">Real Time Monitoring & Predictive Maintenance</h4>
+                    <h1>Welcome to <span>MotorMinder</span></h1>
+                    <p>Monitor Motor Health & Prevent Failures</p>
+                    
+                    <div id="liveIndicator" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; padding: 10px 20px; border-radius: 25px; font-weight: bold;">
+                        <span style="display: block; width: 10px; height: 10px; background: #ef4444; border-radius: 50%;"></span>
+                        BROADCAST OFFLINE
+                    </div>
+                    <style>@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }</style>
+                </div>
+
+                <div class="gauges-container">
+                    <div class="gauge-card"><div id="tempGauge" class="gauge-chart"></div><div class="gauge-label">Temp</div></div>
+                    <div class="gauge-card"><div id="humGauge" class="gauge-chart"></div><div class="gauge-label">Humidity</div></div>
+                    <div class="gauge-card"><div id="currGauge" class="gauge-chart"></div><div class="gauge-label">Current</div></div>
+                    <div class="gauge-card"><div id="voltGauge" class="gauge-chart"></div><div class="gauge-label">Voltage</div></div>
+                    <div class="gauge-card"><div id="vibGauge" class="gauge-chart"></div><div class="gauge-label">Vibration</div></div>
+                </div>
+
+                <div class="controls-section">
+                    <h4>Critical Limits Setup</h4>
+                    <div class="sliders-grid">
+                        <div class="slider-group"><label>Temp (><span id="tempLimitVal">40</span>°C)</label><input type="range" id="tempSlider" min="20" max="80" value="40"></div>
+                        <div class="slider-group"><label>Hum (><span id="humLimitVal">55</span>%)</label><input type="range" id="humSlider" min="20" max="90" value="55"></div>
+                        <div class="slider-group"><label>Curr (><span id="currLimitVal">6.0</span>A)</label><input type="range" id="currSlider" min="0.1" max="10.0" step="0.1" value="6.0"></div>
+                        <div class="slider-group"><label>Volt (><span id="voltLimitVal">15</span>V)</label><input type="range" id="voltSlider" min="5" max="25" step="0.5" value="15.0"></div>
+                        <div class="slider-group"><label>Vib (><span id="vibLimitVal">0.66</span>)</label><input type="range" id="vibSlider" min="0.1" max="1.0" step="0.01" value="0.66"></div>
+                    </div>
+                    <div style="margin-top: 15px; display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="muteToggle" style="accent-color: #4ade80; width: 16px; height: 16px; cursor: pointer;">
+                        <label for="muteToggle" style="font-size: 0.85rem; color: #8b95a5; cursor: pointer;">Mute Audio Alerts</label>
+                    </div>
+                </div>
+
+                <div class="status-footer">
+                    <span>Motor: <span class="text-green">ON</span></span>
+                    <span id="uptime">00:00</span>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="chart-card"><div id="tempLine" class="line-chart"></div></div>
+                <div class="chart-card"><div id="currLine" class="line-chart"></div></div>
+                <div class="chart-card"><div id="voltLine" class="line-chart"></div></div>
+                <div class="chart-card"><div id="vibLine" class="line-chart"></div></div>
+                <div class="status-banner" id="statusBanner">STATUS NORMAL <span class="arrow">▶</span></div>
+            </div>
+        </main>
+
+        <main class="energy-view" id="energyView" style="display: none;">
+            <div class="energy-header">
+                <h1 class="energy-title">SMART ENERGY CONSERVATION</h1>
+                
+                <div class="energy-top-bar">
+                    <div class="gauge-card odometer-card" style="width: 300px; height: 120px; background: #0f172a;">
+                        <div class="gauge-label" style="top: 15px; bottom: auto;">Total Energy (Wh)</div>
+                        <div class="odometer-display" id="energyOdo">0000.00</div>
+                    </div>
+                    
+                    <button id="openAddDeviceBtn" class="add-device-btn">
+                        <span style="font-size: 1.5rem; font-weight: bold;">+</span> Add devices
+                    </button>
+                </div>
+            </div>
+
+            <div class="devices-list" id="devicesList">
+                </div>
+        </main>
+        
+        <main class="models-view" id="modelsView" style="display: none;">
+            <div class="energy-header">
+                <h1 class="energy-title" style="color: #3b82f6;">DIGITAL TWIN 3D MODELS</h1>
+            </div>
+            
+            <div class="models-grid">
+                <div class="model-card">
+                    <h3>Induction Motor</h3>
+                    <model-viewer src="motor.glb" alt="3D Motor Model" auto-rotate camera-controls shadow-intensity="1" environment-image="neutral" exposure="1.2"></model-viewer>
+                </div>
+                <div class="model-card">
+                    <h3>Power Transformer</h3>
+                    <model-viewer src="transformer.glb" alt="3D Transformer Model" auto-rotate camera-controls shadow-intensity="1" environment-image="neutral" exposure="1.2"></model-viewer>
+                </div>
+            </div>
+        </main>
+
+        <main class="alerts-view" id="alertsView" style="display: none;">
+            <div class="alerts-header">
+                <h2>Telemetry Logs <span>(Live Sync to Supabase)</span></h2>
+                <div class="db-status" id="dbStatus">Database: Disconnected</div>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Temp (°C)</th>
+                            <th>Hum (%)</th>
+                            <th>Current (A)</th>
+                            <th>Voltage (V)</th>
+                            <th>Vibration</th>
+                            <th>Energy (Wh)</th>
+                            <th>Runtime (s)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logsTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </main>
+
+    </div>
+
+    <div id="deviceModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 class="modal-title">Add a Device</h2>
+            <div class="form-row">
+                <div class="form-inputs">
+                    <div class="form-group">
+                        <label>Device name :</label>
+                        <input type="text" id="devName" placeholder="e.g. Fan 1">
+                    </div>
+                    <div class="form-group">
+                        <label>Energy Limit (Wh) :</label>
+                        <input type="number" id="devLimit" placeholder="e.g. 2000">
+                    </div>
+                </div>
+                <div class="form-image-upload" id="uploadBox">
+                    <span style="font-size: 2rem;">⬆️</span>
+                    <p>Upload an Image</p>
+                    <p style="font-size: 0.7rem; color: #8b95a5;">Add a photo (optional)</p>
+                    <input type="file" id="devImage" accept="image/*" style="display: none;">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="closeModalBtn" class="secondary-btn">Cancel</button>
+                <button id="saveDeviceBtn" class="primary-btn">Save Device</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="public.js"></script>
+</body>
+</html>

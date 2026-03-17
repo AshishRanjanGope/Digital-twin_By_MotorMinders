@@ -1,0 +1,271 @@
+:root {
+    --bg-main: #0b101e;
+    --panel-bg: #131a2b;
+    --card-bg: #1a2235;
+    --text-main: #ffffff;
+    --text-muted: #8b95a5;
+    --green-accent: #4ade80;
+    --green-btn: #1b4332;
+    --danger-accent: #ef4444;
+    --border-color: #2a3441;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+body { 
+    background-color: var(--bg-main); 
+    color: var(--text-main); 
+    min-height: 100vh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    padding: 20px; 
+    overflow-x: hidden;
+}
+
+.app-container {
+    width: 95vw; 
+    max-width: 1500px; 
+    height: 90vh; 
+    background-color: var(--panel-bg);
+    border-radius: 16px; 
+    border: 1px solid var(--border-color); 
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden;
+}
+
+/* Navbar */
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; border-bottom: 1px solid var(--border-color); background: rgba(19, 26, 43, 0.8); }
+.logo { font-size: 1.2rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+.nav-links { display: flex; gap: 30px; }
+.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; padding: 5px 15px; border-radius: 8px; transition: all 0.3s; }
+.nav-links a.active, .nav-links a:hover { background-color: rgba(255,255,255,0.05); color: var(--text-main); }
+.user-profile { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+.avatar { width: 24px; height: 24px; background: linear-gradient(135deg, #ff4b2b, #ff416c); border-radius: 50%; }
+
+/* Dashboard Grid */
+.dashboard-grid { display: flex; flex: 1; padding: 25px 30px; gap: 30px; overflow-y: auto; overflow-x: hidden; }
+.left-panel { flex: 1.2; display: flex; flex-direction: column; justify-content: flex-start; gap: 20px; }
+.header-text .subtitle { color: var(--green-accent); font-weight: 400; margin-bottom: 8px; }
+.header-text h1 { font-size: 2.5rem; margin-bottom: 8px; }
+.header-text h1 span { color: var(--green-accent); }
+.header-text p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 20px; }
+
+.primary-btn { background: linear-gradient(90deg, #1b4332, #2d6a4f); color: var(--text-main); border: 1px solid #4ade80; padding: 12px 30px; border-radius: 25px; font-size: 1rem; cursor: pointer; transition: 0.3s; }
+.primary-btn:hover { background: linear-gradient(90deg, #2d6a4f, #40916c); }
+
+/* Updated Gauges Layout (3 Top, 2 Centered Bottom) */
+.gauges-container { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 15px; 
+}
+.gauge-card { 
+    background-color: var(--card-bg); 
+    border: 1px solid var(--border-color); 
+    border-radius: 12px; 
+    padding: 10px; 
+    position: relative; 
+    height: 160px; 
+    flex: 0 1 calc(33.333% - 10px); /* 3 items per row, shrinkable */
+    min-width: 140px; 
+}
+.gauge-chart { width: 100%; height: 140px; margin-top: -10px; }
+.gauge-label { position: absolute; bottom: 10px; width: 100%; text-align: center; font-size: 0.85rem; color: var(--text-muted); left: 0;}
+
+/* Sliders */
+.controls-section { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; }
+.controls-section h4 { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; font-weight: normal;}
+.sliders-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.slider-group { display: flex; flex-direction: column; gap: 8px; }
+.slider-group label { font-size: 0.85rem; color: var(--text-main); }
+.slider-group label span { color: var(--green-accent); font-weight: bold; }
+input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--green-accent); cursor: pointer; margin-top: -6px; }
+input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: var(--border-color); border-radius: 2px; }
+
+.status-footer { display: flex; gap: 20px; font-size: 1rem; color: var(--text-muted); }
+.text-green { color: var(--green-accent); }
+
+/* Right Panel */
+.right-panel { flex: 1; display: flex; flex-direction: column; gap: 15px; min-width: 0; } /* min-width 0 prevents flex overflow */
+.chart-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 10px 15px; flex: 1; min-height: 120px; width: 100%; }
+.line-chart { width: 100%; height: 100%; min-height: 100px; }
+
+.status-banner { background: linear-gradient(90deg, #1b4332, #0f291e); border: 1px solid var(--border-color); padding: 15px 20px; border-radius: 8px; color: var(--green-accent); font-weight: 600; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
+
+/* Odometer Styling */
+.odometer-card { display: flex; justify-content: center; align-items: center; }
+.odometer-display { background: #000; color: #fff; font-family: 'Courier New', Courier, monospace; font-size: 2.5rem; font-weight: bold; letter-spacing: 5px; padding: 10px 15px; border-radius: 6px; border: 2px solid #333; box-shadow: inset 0 6px 10px rgba(0,0,0,0.9), inset 0 -4px 8px rgba(0,0,0,0.9), 0 2px 5px rgba(255,255,255,0.05); text-shadow: 0 -1px 1px rgba(0,0,0,0.8); }
+
+/* --- ALERTS & LOGS VIEW STYLES --- */
+.alerts-view { flex: 1; display: flex; flex-direction: column; padding: 30px; gap: 20px; height: 100%; overflow-y: auto; }
+.alerts-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.alerts-header h2 { font-size: 1.5rem; }
+.alerts-header span { color: var(--green-accent); font-size: 1rem; font-weight: normal; }
+
+.db-status { padding: 8px 15px; background: rgba(239, 68, 68, 0.2); color: var(--danger-accent); border: 1px solid var(--danger-accent); border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+.db-status.connected { background: rgba(74, 222, 128, 0.2); color: var(--green-accent); border-color: var(--green-accent); }
+
+.table-container { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; flex: 1; overflow-y: auto; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+.data-table { width: 100%; border-collapse: collapse; text-align: center; min-width: 800px; }
+.data-table th, .data-table td { padding: 10px 15px; border: 1px solid var(--border-color); }
+.data-table th { background-color: #1e293b; color: #f8fafc; font-weight: 600; font-size: 0.9rem; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.data-table td { font-family: 'Courier New', Courier, monospace; font-size: 0.95rem; }
+.data-table td:last-child { font-family: 'Inter', sans-serif; }
+.data-table tbody tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.02); }
+.data-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.06); }
+
+.row-critical { background-color: rgba(239, 68, 68, 0.15) !important; }
+.row-critical td { color: #fca5a5; }
+.status-badge-critical { background: var(--danger-accent); color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+.status-badge-normal { background: var(--green-btn); color: var(--green-accent); padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+
+/* --- SMART ENERGY VIEW & MODAL STYLES --- */
+.energy-view { flex: 1; display: flex; flex-direction: column; padding: 30px; gap: 30px; height: 100%; overflow-y: auto; }
+.energy-title { color: var(--danger-accent); text-align: center; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; }
+.energy-top-bar { display: flex; justify-content: center; align-items: center; position: relative; }
+.add-device-btn { position: absolute; right: 0; background: #94a3b8; color: #0b101e; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 1rem; transition: 0.3s; }
+.add-device-btn:hover { background: #cbd5e1; }
+
+.devices-list { display: flex; flex-direction: column; gap: 20px; }
+.device-card { background: #3b82f6; border-radius: 16px; padding: 20px; display: flex; gap: 20px; align-items: center; color: white; position: relative; }
+.device-img-box { width: 100px; height: 100px; background: white; border-radius: 8px; display: flex; justify-content: center; align-items: center; overflow: hidden; flex-shrink: 0; }
+.device-img-box img { width: 100%; height: 100%; object-fit: cover; }
+.device-info { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+.device-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 600; padding-right: 30px; flex-wrap: wrap; gap: 10px; } 
+.progress-container { margin: 10px 0; }
+.progress-text { font-size: 0.9rem; margin-bottom: 5px; }
+.progress-track { width: 100%; height: 20px; background: rgba(255,255,255,0.3); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.5); }
+.progress-fill { height: 100%; background: #a3e635; width: 0%; transition: width 0.5s ease-out; }
+
+/* Device Status and Toggle Buttons */
+.device-status { display: flex; justify-content: flex-end; align-items: center; font-weight: bold; margin-top: 5px; gap: 15px; }
+.toggle-btn { padding: 6px 16px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.85rem;}
+.toggle-on { background: #ef4444; color: white; } 
+.toggle-off { background: #4ade80; color: #0b101e; } 
+
+/* Remove Device Button */
+.remove-device-btn { position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; border: none; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; font-weight: bold; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.remove-device-btn:hover { background: #b91c1c; transform: scale(1.1); }
+
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px;}
+.modal-content { background: var(--card-bg); border: 1px solid var(--border-color); padding: 30px; border-radius: 16px; width: 600px; max-width: 100%; max-height: 90vh; overflow-y: auto;}
+.modal-title { color: var(--danger-accent); text-align: center; font-size: 2rem; margin-bottom: 30px; }
+.form-row { display: flex; gap: 30px; }
+.form-inputs { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+.form-group label { display: block; color: var(--text-main); margin-bottom: 8px; }
+.form-group input { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid var(--border-color); color: white; border-radius: 6px; }
+.form-image-upload { width: 200px; height: 150px; background: #94a3b8; border-radius: 16px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #0b101e; cursor: pointer; text-align: center; padding: 10px; flex-shrink: 0;}
+.modal-actions { display: flex; justify-content: space-between; margin-top: 30px; }
+.secondary-btn { background: #334155; color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; transition: 0.3s; }
+.secondary-btn:hover { background: #475569; }
+
+/* --- 3D MODELS VIEW STYLES --- */
+.models-view { flex: 1; display: flex; flex-direction: column; padding: 30px; gap: 20px; height: 100%; overflow-y: auto; }
+.models-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; flex: 1; min-height: 500px; }
+.model-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.model-card h3 { color: var(--text-main); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-size: 1.2rem; text-align: center;}
+model-viewer { width: 100%; height: 100%; background-color: var(--bg-main); border-radius: 8px; outline: none; box-shadow: inset 0 0 50px rgba(59, 130, 246, 0.1); min-height: 250px;}
+
+
+/* ========================================= */
+/* --- RESPONSIVE MEDIA QUERIES (MOBILE) --- */
+/* ========================================= */
+
+/* TABLETS (Max Width: 1024px) */
+@media (max-width: 1024px) {
+    body { padding: 0; }
+    .app-container { 
+        width: 100vw; 
+        height: 100vh; 
+        max-width: none; 
+        border-radius: 0; 
+        border: none; 
+    }
+    .dashboard-grid { 
+        flex-direction: column; /* Stack left and right panels */
+        overflow-y: auto;
+    }
+    .left-panel, .right-panel { width: 100%; flex: none; }
+    .right-panel { display: grid; grid-template-columns: 1fr 1fr; } /* Charts side-by-side on tablet */
+}
+
+/* PHONES (Max Width: 768px) */
+@media (max-width: 768px) {
+    /* Modern Mobile Navbar: Logo & User top, Swipeable links bottom */
+    .navbar { 
+        flex-direction: row; 
+        flex-wrap: wrap; 
+        padding: 15px 15px 5px 15px; 
+        justify-content: space-between; 
+        gap: 15px;
+    }
+    .logo { order: 1; font-size: 1.1rem; }
+    .user-profile { order: 2; }
+    .nav-links { 
+        order: 3; 
+        width: 100%; 
+        justify-content: flex-start; 
+        flex-wrap: nowrap; /* Prevents stacking */
+        overflow-x: auto;  /* Allows horizontal swiping */
+        -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+        padding-bottom: 10px; 
+        gap: 8px;
+    }
+    
+    /* Hide the ugly scrollbar but keep it swipeable */
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .nav-links a { 
+        white-space: nowrap; /* Keeps link text on one line */
+        font-size: 0.85rem; 
+        padding: 8px 12px; 
+    }
+
+    /* Dashboard Header */
+    .header-text h1 { font-size: 2rem; }
+    .dashboard-grid { padding: 15px; gap: 20px; }
+
+    /* Gauges Grid - 2 per row on mobile */
+    .gauge-card { flex: 0 1 calc(50% - 10px); min-width: 130px; }
+    
+    /* Sliders */
+    .sliders-grid { grid-template-columns: 1fr; }
+
+    /* Charts */
+    .right-panel { grid-template-columns: 1fr; } 
+
+    /* 3D Models */
+    .models-grid { grid-template-columns: 1fr; }
+    
+    /* Smart Energy Tab */
+    .energy-view { padding: 15px; }
+    .energy-title { font-size: 1.5rem; }
+    .energy-top-bar { flex-direction: column; gap: 15px; }
+    .add-device-btn { position: relative; width: 100%; justify-content: center; }
+
+    /* Smart Energy Device Cards */
+    .device-card { flex-direction: column; text-align: center; padding: 30px 15px 15px 15px; }
+    .device-img-box { margin: 0 auto; }
+    .device-header { flex-direction: column; padding-right: 0; }
+    .device-status { justify-content: center; margin-top: 15px; }
+    .remove-device-btn { top: 10px; right: 10px; }
+
+    /* Alerts & Logs */
+    .alerts-view { padding: 15px; }
+    .alerts-header { flex-direction: column; align-items: flex-start; }
+
+    /* Modal Form */
+    .form-row { flex-direction: column; }
+    .form-image-upload { width: 100%; height: 120px; }
+}
+
+/* VERY SMALL PHONES (Max Width: 480px) */
+@media (max-width: 480px) {
+    .header-text h1 { font-size: 1.6rem; }
+    .odometer-card { width: 100% !important; }
+}
